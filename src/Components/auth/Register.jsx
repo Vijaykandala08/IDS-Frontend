@@ -5,12 +5,38 @@ import { useNavigate } from "react-router-dom";
 const Register = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    // Add your registration logic here
-    // After successful registration, you can redirect to login or home
-    navigate("/login");
+  const handleRegister = async (e) => {
+  e.preventDefault();
+
+  const formData = {
+    username: e.target[0].value,
+    email: e.target[1].value,
+    password: e.target[2].value,
   };
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("Registration successful!");
+      navigate("/login");
+    } else {
+      alert(data.detail || "Registration failed");
+    }
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Server error");
+  }
+};
 
   return (
     <div className={`transition-all duration-500 ease-in-out ${open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full absolute'}`}>

@@ -27,17 +27,17 @@ const Home = () => {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6" style={{
+            <h1 className="text-5xl lg:text-6xl font-bold mb-6" style={{
               background: "linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #3b82f6 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text"
             }}>
-              Protect Your Digital Assets
+              Realtime Network Intrusion Detection
             </h1>
 
-            <p className="text-xl lg:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto">
-              AI-powered cybersecurity platform that detects, prevents, and responds to threats in real-time
+            <p className="text-xl lg:text-1xl text-gray-400 mb-12 max-w-3xl mx-auto">
+              Detects attacks live, visualize geolocation, explain why traffic is flagged - production-ready demos with ML + explainability
             </p>
 
             {/* CTA Buttons */}
@@ -86,11 +86,11 @@ const Home = () => {
             <div className="grid grid-cols-3 gap-8 mt-20 max-w-3xl mx-auto">
               <div>
                 <div className="text-4xl font-bold text-blue-400 mb-2">99.9%</div>
-                <div className="text-gray-400 text-sm">Threat Detection</div>
+                <div className="text-gray-400 text-sm">Accuracy</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-blue-400 mb-2">&lt;1ms</div>
-                <div className="text-gray-400 text-sm">Response Time</div>
+                <div className="text-4xl font-bold text-blue-400 mb-2">160</div>
+                <div className="text-gray-400 text-sm">Attacks Detected</div>
               </div>
               <div>
                 <div className="text-4xl font-bold text-blue-400 mb-2">24/7</div>
@@ -113,8 +113,8 @@ const Home = () => {
             {[
               {
                 icon: "🛡️",
-                title: "Real-time Monitoring",
-                description: "Continuous surveillance of your network traffic and system activities"
+                title: "Real-time Detection",
+                description: "Stream flows continuously and detect suspicious activity with millisecond latency"
               },
               {
                 icon: "🤖",
@@ -123,8 +123,8 @@ const Home = () => {
               },
               {
                 icon: "📊",
-                title: "Advanced Analytics",
-                description: "Deep insights into security patterns and vulnerability trends"
+                title: "Explainable AI",
+                description: "Shap-based explanation show which features drove a decision for each flagged flow"
               },
               {
                 icon: "⚡",
@@ -132,9 +132,9 @@ const Home = () => {
                 description: "Get notified immediately when suspicious activity is detected"
               },
               {
-                icon: "🔒",
-                title: "Data Encryption",
-                description: "Military-grade encryption protects your sensitive information"
+                icon: "🗺️",
+                title: "Geo Intelligence",
+                description: "Map attack origins using MaxMind GeoLite2 - visualize global attack patterns live"
               },
               {
                 icon: "📈",
@@ -179,10 +179,10 @@ const Home = () => {
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { step: "01", title: "Connect", desc: "Integrate Kavach with your systems" },
-              { step: "02", title: "Monitor", desc: "AI continuously analyzes your data" },
-              { step: "03", title: "Detect", desc: "Threats identified in real-time" },
-              { step: "04", title: "Protect", desc: "Automated response neutralizes risks" }
+              { step: "01", title: "Traffic Ingestion", desc:"CICIDS dataset traffic is replayed in real time through a generator engine." },
+              { step: "02", title: "Real-Time Analysis", desc: "Incoming network flows are processed and analyzed using machine learning models." },
+              { step: "03", title: "Detection & Explainability", desc: "Attack scores are computed and explained using SHAP-based feature importance." },
+              { step: "04", title: "Visualization & Insights", desc: "Detected threats and performance metrics are displayed on live dashboards." }
             ].map((item, index) => (
               <div key={index} className="text-center">
                 <div

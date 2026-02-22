@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const CyberIcon = () => (
   <svg viewBox="0 0 64 64" className="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -17,12 +17,34 @@ const CyberIcon = () => (
   </svg>
 );
 
-const navLinks = ["Home", "Features", "Tools", "Team", "Prediction", "Analysis"];
+const navLinks = [
+  { name: "Home", path: "/" },
+  { name: "Features", path: "/features" },
+  { name: "Tools", path: "/tools" },
+  { name: "Team", path: "/team" },
+  { name: "Prediction", path: "/prediction" },
+  { name: "Analysis", path: "/analysis" }
+];
 
 export default function Navbar() {
-  const [activeLink, setActiveLink] = useState("Home");
-  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Determine active link based on current path
+  const getActiveLink = () => {
+    const currentPath = location.pathname;
+    const activeNavLink = navLinks.find(link => link.path === currentPath);
+    return activeNavLink ? activeNavLink.name : "Home";
+  };
+
+  const [activeLink, setActiveLink] = useState(getActiveLink());
+
+  const handleNavClick = (link) => {
+    setActiveLink(link.name);
+    navigate(link.path);
+    setMenuOpen(false);
+  };
 
   return (
     <nav
@@ -46,7 +68,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between" style={{ height: "72px" }}>
 
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <div 
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             <div
               className="flex items-center justify-center rounded-lg"
               style={{
@@ -74,58 +99,149 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-4">
             {navLinks.map((link) => (
-              <a
-                key={link}
-                href="#"
-                onClick={(e) => { e.preventDefault(); setActiveLink(link); }}
+              <button
+                key={link.name}
+                onClick={() => handleNavClick(link)}
                 className="relative px-4 py-2 text-sm font-medium transition-all duration-200"
                 style={{
-                  color: activeLink === link ? "#93c5fd" : "#94a3b8",
+                  color: activeLink === link.name ? "#93c5fd" : "#94a3b8",
                   borderRadius: "6px",
-                  background: activeLink === link ? "rgba(59,130,246,0.1)" : "transparent",
+                  background: activeLink === link.name ? "rgba(59,130,246,0.1)" : "transparent",
                 }}
-                onMouseEnter={(e) => { if (activeLink !== link) { e.target.style.color="#cbd5e1"; e.target.style.background="rgba(59,130,246,0.06)"; }}}
-                onMouseLeave={(e) => { if (activeLink !== link) { e.target.style.color="#94a3b8"; e.target.style.background="transparent"; }}}
+                onMouseEnter={(e) => { 
+                  if (activeLink !== link.name) { 
+                    e.target.style.color="#cbd5e1"; 
+                    e.target.style.background="rgba(59,130,246,0.06)"; 
+                  }
+                }}
+                onMouseLeave={(e) => { 
+                  if (activeLink !== link.name) { 
+                    e.target.style.color="#94a3b8"; 
+                    e.target.style.background="transparent"; 
+                  }
+                }}
               > 
-                {link}
-                {activeLink === link && (
-                  <span className="absolute left-1/2" style={{ transform:"translateX(-50%)", width:"24px", height:"2px", background:"#3b82f6", borderRadius:"2px", bottom:"0px" }} />
+                {link.name}
+                {activeLink === link.name && (
+                  <span 
+                    className="absolute left-1/2" 
+                    style={{ 
+                      transform:"translateX(-50%)", 
+                      width:"24px", 
+                      height:"2px", 
+                      background:"#3b82f6", 
+                      borderRadius:"2px", 
+                      bottom:"0px" 
+                    }} 
+                  />
                 )}
-              </a>
+              </button>
             ))}
 
             <button
               onClick={() => navigate("/login")}
               className="ml-4 font-semibold text-sm transition-all duration-200"
-              style={{ padding:"7px 22px", borderRadius:"6px", color:"#0f1729", background:"linear-gradient(135deg,#60a5fa,#3b82f6)", border:"none", cursor:"pointer", boxShadow:"0 2px 10px rgba(59,130,246,0.35)" }}
-              onMouseEnter={(e) => { e.target.style.background="linear-gradient(135deg,#93c5fd,#60a5fa)"; e.target.style.boxShadow="0 4px 16px rgba(59,130,246,0.5)"; e.target.style.transform="translateY(-1px)"; }}
-              onMouseLeave={(e) => { e.target.style.background="linear-gradient(135deg,#60a5fa,#3b82f6)"; e.target.style.boxShadow="0 2px 10px rgba(59,130,246,0.35)"; e.target.style.transform="translateY(0)"; }}
+              style={{ 
+                padding:"7px 22px", 
+                borderRadius:"6px", 
+                color:"#0f1729", 
+                background:"linear-gradient(135deg,#60a5fa,#3b82f6)", 
+                border:"none", 
+                cursor:"pointer", 
+                boxShadow:"0 2px 10px rgba(59,130,246,0.35)" 
+              }}
+              onMouseEnter={(e) => { 
+                e.target.style.background="linear-gradient(135deg,#93c5fd,#60a5fa)"; 
+                e.target.style.boxShadow="0 4px 16px rgba(59,130,246,0.5)"; 
+                e.target.style.transform="translateY(-1px)"; 
+              }}
+              onMouseLeave={(e) => { 
+                e.target.style.background="linear-gradient(135deg,#60a5fa,#3b82f6)"; 
+                e.target.style.boxShadow="0 2px 10px rgba(59,130,246,0.35)"; 
+                e.target.style.transform="translateY(0)"; 
+              }}
             >
               Login
             </button>
           </div>
 
           {/* Mobile Hamburger */}
-          <button className="md:hidden flex flex-col justify-center items-center w-10 h-10" onClick={() => setMenuOpen(!menuOpen)}>
-            <span className="block transition-all duration-300" style={{ width:"22px", height:"2px", background:"#60a5fa", borderRadius:"2px", marginBottom:"5px", transform: menuOpen ? "rotate(45deg) translate(5px,5px)" : "none" }} />
-            <span className="block transition-all duration-300" style={{ width:"22px", height:"2px", background:"#60a5fa", borderRadius:"2px", marginBottom:"5px", opacity: menuOpen ? 0 : 1 }} />
-            <span className="block transition-all duration-300" style={{ width:"22px", height:"2px", background:"#60a5fa", borderRadius:"2px", transform: menuOpen ? "rotate(-45deg) translate(5px,-5px)" : "none" }} />
+          <button 
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10" 
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span 
+              className="block transition-all duration-300" 
+              style={{ 
+                width:"22px", 
+                height:"2px", 
+                background:"#60a5fa", 
+                borderRadius:"2px", 
+                marginBottom:"5px", 
+                transform: menuOpen ? "rotate(45deg) translate(5px,5px)" : "none" 
+              }} 
+            />
+            <span 
+              className="block transition-all duration-300" 
+              style={{ 
+                width:"22px", 
+                height:"2px", 
+                background:"#60a5fa", 
+                borderRadius:"2px", 
+                marginBottom:"5px", 
+                opacity: menuOpen ? 0 : 1 
+              }} 
+            />
+            <span 
+              className="block transition-all duration-300" 
+              style={{ 
+                width:"22px", 
+                height:"2px", 
+                background:"#60a5fa", 
+                borderRadius:"2px", 
+                transform: menuOpen ? "rotate(-45deg) translate(5px,-5px)" : "none" 
+              }} 
+            />
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden px-4 pb-4" style={{ borderTop:"1px solid rgba(59,130,246,0.1)", background:"rgba(15,23,41,0.95)" }}>
+        <div 
+          className="md:hidden px-4 pb-4" 
+          style={{ 
+            borderTop:"1px solid rgba(59,130,246,0.1)", 
+            background:"rgba(15,23,41,0.95)" 
+          }}
+        >
           <div className="flex flex-col gap-1 pt-3">
             {navLinks.map((link) => (
-              <a key={link} href="#" onClick={(e) => { e.preventDefault(); setActiveLink(link); setMenuOpen(false); }}
-                className="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200"
-                style={{ color: activeLink===link ? "#93c5fd" : "#94a3b8", background: activeLink===link ? "rgba(59,130,246,0.1)" : "transparent" }}>
-                {link}
-              </a>
+              <button 
+                key={link.name} 
+                onClick={() => handleNavClick(link)}
+                className="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 text-left"
+                style={{ 
+                  color: activeLink === link.name ? "#93c5fd" : "#94a3b8", 
+                  background: activeLink === link.name ? "rgba(59,130,246,0.1)" : "transparent" 
+                }}
+              >
+                {link.name}
+              </button>
             ))}
-            <button onClick={() => { navigate("/login"); setMenuOpen(false); }} className="mt-3 w-full font-semibold text-sm" style={{ padding:"10px", borderRadius:"6px", color:"#0f1729", background:"linear-gradient(135deg,#60a5fa,#3b82f6)", border:"none", cursor:"pointer", boxShadow:"0 2px 10px rgba(59,130,246,0.35)" }} >
+            <button 
+              onClick={() => { navigate("/login"); setMenuOpen(false); }} 
+              className="mt-3 w-full font-semibold text-sm" 
+              style={{ 
+                padding:"10px", 
+                borderRadius:"6px", 
+                color:"#0f1729", 
+                background:"linear-gradient(135deg,#60a5fa,#3b82f6)", 
+                border:"none", 
+                cursor:"pointer", 
+                boxShadow:"0 2px 10px rgba(59,130,246,0.35)" 
+              }} 
+            >
               Login
             </button>
           </div>

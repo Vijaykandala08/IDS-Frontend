@@ -5,12 +5,36 @@ import { useNavigate } from "react-router-dom";
 const Login = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Add your login logic here
-    // After successful login, redirect to home
-    navigate("/");
+  const handleLogin = async (e) => {
+  e.preventDefault();
+
+  const formData = {
+    email: e.target[0].value,
+    password: e.target[1].value,
   };
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("token", data.access_token);
+      navigate("/");
+    } else {
+      alert(data.detail || "Login failed");
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <div className={`transition-all duration-500 ease-in-out ${open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full absolute'}`}>
